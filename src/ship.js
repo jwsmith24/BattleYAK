@@ -13,35 +13,35 @@ function createShip(length) {
 
 function createCarrier() {
   return {
-    stats: createShip(4),
+    ...createShip(4),
     name: 'Carrier',
   };
 }
 
 function createBattleship() {
   return {
-    stats: createShip(4),
+    ...createShip(4),
     name: 'Battleship',
   };
 }
 
 function createCruiser() {
   return {
-    stats: createShip(3),
+    ...createShip(3),
     name: 'Cruiser',
   };
 }
 
 function createSubmarine() {
   return {
-    stats: createShip(3),
+    ...createShip(3),
     name: 'Submarine',
   };
 }
 
 function createDestroyer() {
   return {
-    stats: createShip(2),
+    ...createShip(2),
     name: 'Destroyer',
   };
 }
