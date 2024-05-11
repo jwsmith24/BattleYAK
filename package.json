@@ -4,7 +4,7 @@
   "description": "Battleship implementation with an emphasis on Test-Driven Development. Capstone project for TOP Javascript course.",
   "main": "ship.js",
   "scripts": {
-    "test": "npx jest",
+    "test": "jest",
     "watch": "npx jest --watch *.js",
     "build": "npx webpack",
     "cBuild": "npx webpack --watch"
