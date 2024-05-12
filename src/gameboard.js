@@ -1,10 +1,13 @@
 const boardWidth = 10;
 const boardHeight = 10;
+const attackStatus = {
+  HIT: 'HIT',
+  MISS: 'MISS',
+};
 
 function createGameBoard() {
-  const board = {
+  const gameboard = {
     board: [],
-    ships: [],
     attackLog: [],
     resetBoard: function () {
       for (let i = 0; i < boardHeight; i++) {
@@ -19,26 +22,33 @@ function createGameBoard() {
         }
       }
     },
+
     // gets a list of spaces that the ship is occupying. Sets all of their ship references to target ship.
     placeShip: function (spaces, ship) {
       for (let space of spaces) {
-        this.board[space.x][space.y] = ship;
+        this.board[space.y][space.x].ship = ship;
       }
     },
     handleAttack: function (space) {
       // if the space has a ship reference, it's a hit!
+      const ship = this.board[space.y][space.x].ship;
 
-      if (this.board[space.y][space.x].ship !== 'empty') {
-        console.log('hit!');
+      if (ship !== 'empty') {
+        this.logAttack(space, attackStatus.HIT);
+        ship.hit();
       } else {
-        console.log('miss!');
+        this.logAttack(space, attackStatus.MISS);
       }
     },
+    logAttack: function (space, status) {
+      this.attackLog.push({ space, status });
+    },
   };
-  board.resetBoard();
-  return board;
+  gameboard.resetBoard();
+  return gameboard;
 }
 
 module.exports = {
   createGameBoard,
+  attackStatus,
 };
