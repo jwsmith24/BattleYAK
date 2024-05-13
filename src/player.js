@@ -8,7 +8,8 @@ const playerType = {
 function createPlayer(playerType) {
   const player = {
     type: playerType,
-    game: gameBoardModule.createGameBoard(),
+    board: gameBoardModule.createGameBoard(),
+    attackLog: [],
   };
 
   return player;
