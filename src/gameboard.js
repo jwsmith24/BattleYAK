@@ -8,6 +8,7 @@ const attackStatus = {
 function createGameBoard() {
   const gameboard = {
     board: [],
+    ships: [],
     attackLog: [],
     resetBoard: function () {
       for (let i = 0; i < boardHeight; i++) {
@@ -25,6 +26,7 @@ function createGameBoard() {
 
     // gets a list of spaces that the ship is occupying. Sets all of their ship references to target ship.
     placeShip: function (spaces, ship) {
+      this.ships.push(ship);
       for (let space of spaces) {
         this.board[space.y][space.x].ship = ship;
       }
@@ -42,6 +44,14 @@ function createGameBoard() {
     },
     logAttack: function (space, status) {
       this.attackLog.push({ space, status });
+    },
+    fleetSunk: function () {
+      for (let ship of this.ships) {
+        if (!ship.isSunk()) {
+          return false;
+        }
+      }
+      return true;
     },
   };
   gameboard.resetBoard();

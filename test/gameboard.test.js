@@ -34,6 +34,11 @@ test('Place a ship on the board', () => {
   expect(gameboard.board[0][3].ship.length).toBe(4);
 });
 
+test('Track all ships that are placed', () => {
+  expect(gameboard.ships.length).toBe(1);
+  expect(gameboard.ships[0].isSunk()).toBe(false);
+});
+
 test('Strike a ship in multiple locations and the same reference updates hit count', () => {
   const strike1 = {
     x: 0,
@@ -62,10 +67,42 @@ test('Miss a ship', () => {
 
   gameboard.handleAttack(miss);
   expect(battleship.hits).toBe(2);
-  expect(gameboard.attackLog[1].status).toBe(board.attackStatus.HIT);
 });
 
-test('Miss logged correctly in attack log', () => {
+test('Miss logged in attack log', () => {
   expect(gameboard.attackLog.length).toBe(3);
   expect(gameboard.attackLog[2].status).toBe(board.attackStatus.MISS);
+});
+
+test('Hit logged in attack log', () => {
+  expect(gameboard.attackLog[0].status).toBe(board.attackStatus.HIT);
+});
+
+test('Gameboard correctly tracks if all ships have been sunk', () => {
+  expect(gameboard.fleetSunk()).toBe(false);
+});
+
+test('Sink a ship', () => {
+  const strike3 = {
+    x: 1,
+    y: 0,
+  };
+
+  const strike4 = {
+    x: 2,
+    y: 0,
+  };
+
+  gameboard.handleAttack(strike3);
+  gameboard.handleAttack(strike4);
+
+  expect(gameboard.board[0][0].ship.isSunk()).toBe(true);
+});
+
+test('Gameboard tracks ships that have been sunk', () => {
+  expect(gameboard.ships[0].isSunk()).toBe(true);
+});
+
+test('Gameboard tracks if all ships have been sunk', () => {
+  expect(gameboard.fleetSunk()).toBe(true);
 });
