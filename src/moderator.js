@@ -1,7 +1,9 @@
+/* eslint-disable no-unused-vars */
+import './style.css';
 const playerModule = require('../src/player');
 
-const player1 = playerModule.createPlayer(playerModule.playerType.REAL);
-const player2 = playerModule.createPlayer(playerModule.playerType.COMPUTER);
+let player1 = playerModule.createPlayer(playerModule.playerType.REAL);
+let player2 = playerModule.createPlayer(playerModule.playerType.COMPUTER);
 // 1-> p1, 2 -> p2
 let turn = 1;
 
@@ -11,4 +13,12 @@ function nextTurn() {
   } else {
     turn = 1;
   }
+}
+
+function startGame() {
+  player1 = playerModule.createPlayer(playerModule.playerType.REAL);
+  player2 = playerModule.createPlayer(playerModule.playerType.COMPUTER);
+
+  console.log(player1);
+  console.log(player2);
 }
