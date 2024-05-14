@@ -61,4 +61,6 @@ function createGameBoard() {
 module.exports = {
   createGameBoard,
   attackStatus,
+  boardWidth,
+  boardHeight,
 };
