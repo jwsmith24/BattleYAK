@@ -53,6 +53,26 @@ function createGameBoard() {
       }
       return true;
     },
+    buildDisplay: function () {
+      // div for each row
+
+      const grid = document.createElement('div');
+      grid.classList.add('grid');
+
+      for (let i = 0; i < boardHeight; i++) {
+        let row = document.createElement('div');
+        row.classList.add('row');
+        for (let j = 0; j < boardWidth; j++) {
+          let space = document.createElement('div');
+          space.classList.add('space');
+          space.textContent = `${i} ${j}`;
+          row.appendChild(space);
+        }
+        grid.appendChild(row);
+      }
+
+      return grid;
+    },
   };
   gameboard.resetBoard();
   return gameboard;
