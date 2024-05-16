@@ -3,6 +3,7 @@ const boardHeight = 10;
 const attackStatus = {
   HIT: 'HIT',
   MISS: 'MISS',
+  NONE: 'NONE',
 };
 
 function createGameBoard() {
@@ -16,6 +17,7 @@ function createGameBoard() {
         for (let j = 0; j < boardWidth; j++) {
           this.board[i][j] = {
             ship: 'empty',
+            status: attackStatus.NONE,
             hasTarget: function () {
               return this.ship !== 'empty';
             },
@@ -33,13 +35,18 @@ function createGameBoard() {
     },
     handleAttack: function (space) {
       // if the space has a ship reference, it's a hit!
-      const ship = this.board[space.y][space.x].ship;
+      const target = this.board[space.y][space.x];
 
-      if (ship !== 'empty') {
+      if (target.ship !== 'empty') {
         this.logAttack(space, attackStatus.HIT);
-        ship.hit();
+        target.ship.hit();
+        target.status = attackStatus.HIT;
+        this.updateActiveShips();
+        return true;
       } else {
         this.logAttack(space, attackStatus.MISS);
+        target.status = attackStatus.MISS;
+        return false;
       }
     },
     logAttack: function (space, status) {
@@ -65,13 +72,28 @@ function createGameBoard() {
         for (let j = 0; j < boardWidth; j++) {
           let space = document.createElement('div');
           space.classList.add('space');
-          space.textContent = `${i} ${j}`;
+          space.textContent = `${i}${j}`;
+          space.id = `${i} ${j}`;
+
+          if (this.board[i][j].status === attackStatus.HIT) {
+            space.textContent = 'X';
+            space.style.backgroundColor = 'red';
+          }
+
+          if (this.board[i][j].status === attackStatus.MISS) {
+            space.textContent = 'O';
+            space.style.backgroundColor = 'white';
+          }
+
           row.appendChild(space);
         }
         grid.appendChild(row);
       }
 
       return grid;
+    },
+    updateActiveShips: function () {
+      this.ships = this.ships.filter((ship) => !ship.isSunk());
     },
   };
   gameboard.resetBoard();

@@ -11,8 +11,17 @@
     </header>
     <main>
       <div class="boards">
-        <div class="gameBoard" id="player1Board">p1 board</div>
-        <div class="gameBoard" id="player2Board">p2 board</div>
+        <div class="player" id="p1">
+          <div class="gameBoard" id="player1Board"></div>
+          <p class="yakCount" id="p1YakCount">Find the yaks!</p>
+        </div>
+        <div class="player" id="p2">
+          <div class="gameBoard" id="player2Board"></div>
+          <p class="yakCount" id="p2YakCount">Find the yaks!</p>
+        </div>
+      </div>
+      <div class="status">
+        <p id="statusText">Future game status text</p>
       </div>
     </main>
 
