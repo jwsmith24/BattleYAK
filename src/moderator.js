@@ -12,16 +12,21 @@ const p2YakCount = document.getElementById('p2YakCount');
 
 let player1 = playerModule.createPlayer(playerModule.playerType.REAL);
 let player2 = playerModule.createPlayer(playerModule.playerType.COMPUTER);
-// 1-> p1, 2 -> p2
-let turn = 1;
+
+const turns = {
+  player1: 'p1',
+  player2: 'p2',
+};
+
+let activeTurn = turns.player1;
 
 function nextTurn() {
   updateYakCount();
   loadBoards();
-  if (turn === 1) {
-    turn = 2;
+  if (activeTurn === turns.player1) {
+    activeTurn = turns.player2;
   } else {
-    turn = 1;
+    activeTurn = turns.player1;
   }
 }
 
@@ -57,7 +62,7 @@ populateBoards();
 initBoards();
 
 function handlePlayer1Turn(target) {
-  if (turn !== 1) {
+  if (activeTurn !== turns.player1) {
     console.log('Not your turn!');
     return;
   } else {
@@ -69,7 +74,7 @@ function handlePlayer1Turn(target) {
 }
 
 function handlePlayer2Turn(target) {
-  if (turn !== 2) {
+  if (activeTurn !== turns.player2) {
     console.log('Not your turn!');
     return;
   } else {
@@ -94,7 +99,7 @@ function resolveSpace(targetString) {
   return space;
 }
 
-// hard code yaks
+// hard code yaks for testing
 function populateBoards() {
   const battleYak = [
     {
