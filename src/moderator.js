@@ -1,5 +1,10 @@
 /* eslint-disable no-unused-vars */
-import { createBattleship, createCarrier, createDestroyer } from './ship';
+import {
+  createBattleship,
+  createCarrier,
+  createCruiser,
+  createDestroyer,
+} from './ship';
 import './style.css';
 const playerModule = require('../src/player');
 
@@ -13,15 +18,41 @@ const p2YakCount = document.getElementById('p2YakCount');
 let player1 = playerModule.createPlayer(playerModule.playerType.REAL);
 let player2 = playerModule.createPlayer(playerModule.playerType.COMPUTER);
 
+const tinyYak1 = document.getElementById('tinyYak1');
+const smallYak1 = document.getElementById('smallYak1');
+const mediumYak1 = document.getElementById('mediumYak1');
+const largeYak1 = document.getElementById('largeYak1');
+
+const tinyYak2 = document.getElementById('tinyYak2');
+const smallYak2 = document.getElementById('smallYak2');
+const mediumYak2 = document.getElementById('mediumYak2');
+const largeYak2 = document.getElementById('largeYak2');
+
 const turns = {
   player1: 'p1',
   player2: 'p2',
 };
 
+const gameState = {
+  init: 'init',
+  playing: 'playing',
+  gameOver: 'gameOver',
+};
+
 let activeTurn = turns.player1;
+let state = gameState.init;
+
+function startGame() {
+  populateBoards();
+  initBoards();
+  updateYaks();
+}
+
+startGame();
 
 function nextTurn() {
-  updateYakCount();
+  checkGameOver();
+  updateYaks();
   loadBoards();
   if (activeTurn === turns.player1) {
     activeTurn = turns.player2;
@@ -58,9 +89,6 @@ function clearBoards() {
   p2BoardDisplay.innerHTML = '';
 }
 
-populateBoards();
-initBoards();
-
 function handlePlayer1Turn(target) {
   if (activeTurn !== turns.player1) {
     console.log('Not your turn!');
@@ -85,9 +113,66 @@ function handlePlayer2Turn(target) {
   }
 }
 
-function updateYakCount() {
-  p1YakCount.textContent = `Yaks Remaining: ${player1.board.ships.length}`;
-  p2YakCount.textContent = `Yaks Remaining: ${player2.board.ships.length}`;
+function resetYaks() {
+  tinyYak1.classList.remove('hidden');
+  smallYak1.classList.remove('hidden');
+  mediumYak1.classList.remove('hidden');
+  largeYak1.classList.remove('hidden');
+
+  tinyYak2.classList.remove('hidden');
+  smallYak2.classList.remove('hidden');
+  mediumYak2.classList.remove('hidden');
+  largeYak2.classList.remove('hidden');
+}
+
+function hideP1Yaks(yaks) {
+  for (let yak of yaks) {
+    switch (yak.length) {
+      case 2:
+        tinyYak1.classList.add('hidden');
+        break;
+      case 3:
+        smallYak1.classList.add('hidden');
+        break;
+      case 4:
+        mediumYak1.classList.add('hidden');
+        break;
+      case 5:
+        largeYak1.classList.add('hidden');
+    }
+  }
+}
+
+function hideP2Yaks(yaks) {
+  console.log(yaks);
+  for (let yak of yaks) {
+    switch (yak.length) {
+      case 2:
+        tinyYak2.classList.add('hidden');
+        break;
+      case 3:
+        smallYak2.classList.add('hidden');
+        break;
+      case 4:
+        mediumYak2.classList.add('hidden');
+        break;
+      case 5:
+        largeYak2.classList.add('hidden');
+    }
+  }
+}
+
+function updateYaks() {
+  const p1Yaks = player1.board.ships;
+  const p2Yaks = player2.board.ships;
+
+  resetYaks();
+  hideP1Yaks(p1Yaks);
+  hideP2Yaks(p2Yaks);
+
+  p1YakCount.textContent = `Yaks Remaining: ${p1Yaks.length}`;
+
+  p2YakCount.textContent = `Yaks Remaining: ${p2Yaks.length}`;
 }
 
 function resolveSpace(targetString) {
@@ -101,7 +186,7 @@ function resolveSpace(targetString) {
 
 // hard code yaks for testing
 function populateBoards() {
-  const battleYak = [
+  const mediumYak = [
     {
       x: 0,
       y: 0,
@@ -120,7 +205,7 @@ function populateBoards() {
     },
   ];
 
-  const carrierYak = [
+  const largeYak = [
     {
       x: 9,
       y: 0,
@@ -143,7 +228,7 @@ function populateBoards() {
     },
   ];
 
-  const destroyerYak = [
+  const tinyYak = [
     {
       x: 1,
       y: 6,
@@ -154,11 +239,35 @@ function populateBoards() {
     },
   ];
 
-  player1.board.placeShip(destroyerYak, createDestroyer());
-  player1.board.placeShip(carrierYak, createCarrier());
-  player1.board.placeShip(battleYak, createBattleship());
+  const smallYak = [
+    {
+      x: 9,
+      y: 9,
+    },
+    {
+      x: 8,
+      y: 9,
+    },
+    {
+      x: 7,
+      y: 9,
+    },
+  ];
 
-  player2.board.placeShip(destroyerYak, createDestroyer());
-  player2.board.placeShip(carrierYak, createCarrier());
-  player2.board.placeShip(battleYak, createBattleship());
+  player1.board.placeShip(tinyYak, createDestroyer());
+  player1.board.placeShip(largeYak, createCarrier());
+  player1.board.placeShip(mediumYak, createBattleship());
+  player1.board.placeShip(smallYak, createCruiser());
+
+  player2.board.placeShip(tinyYak, createDestroyer());
+  player2.board.placeShip(largeYak, createCarrier());
+  player2.board.placeShip(mediumYak, createBattleship());
+  player2.board.placeShip(smallYak, createCruiser());
+}
+
+function checkGameOver() {
+  if (player1.board.fleetSunk() || player2.board.fleetSunk()) {
+    alert('game over!');
+    state = gameState.gameOver;
+  }
 }

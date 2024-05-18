@@ -1,6 +1,6 @@
 function createShip(length) {
   return {
-    length: length,
+    length,
     hits: 0,
     hit: function () {
       this.hits++;
@@ -13,8 +13,8 @@ function createShip(length) {
 
 function createCarrier() {
   return {
-    ...createShip(4),
-    name: 'Carrier',
+    ...createShip(5),
+    name: 'Large Yak',
   };
 }
 
@@ -32,13 +32,6 @@ function createCruiser() {
   };
 }
 
-function createSubmarine() {
-  return {
-    ...createShip(3),
-    name: 'Submarine',
-  };
-}
-
 function createDestroyer() {
   return {
     ...createShip(2),
@@ -50,6 +43,5 @@ module.exports = {
   createCarrier,
   createBattleship,
   createCruiser,
-  createSubmarine,
   createDestroyer,
 };

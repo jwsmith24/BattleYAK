@@ -85,7 +85,7 @@ main {
   display: grid;
   grid-template-columns: 1fr;
   align-content: center;
-  align-self: baseline;
+  align-self: center;
 }
 
 .boards {
@@ -97,6 +97,11 @@ main {
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr;
+  gap: 20px;
+}
+
+.player {
+  display: grid;
   gap: 10px;
 }
 
@@ -113,11 +118,37 @@ main {
 
 .space {
   background-color: rgba(52, 114, 11, 0.795);
-  width: 30px;
+  width: 40px;
   border: 1px solid black;
   text-align: center;
 }
 
 .space:hover {
   background-color: #ccc;
+}
+
+.yaks {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+}
+
+.yaks > * {
+  opacity: 1;
+}
+
+.hidden {
+  opacity: 0.3;
+}
+
+#placementForm {
+  display: grid;
+  gap: 10px;
+  padding: 18px;
+}
+
+.buttons {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
 }
