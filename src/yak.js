@@ -11,28 +11,28 @@ function createShip(length) {
   };
 }
 
-function createCarrier() {
+function createLargeYak() {
   return {
     ...createShip(5),
     name: 'Large Yak',
   };
 }
 
-function createBattleship() {
+function createMediumYak() {
   return {
     ...createShip(4),
     name: 'Battleship',
   };
 }
 
-function createCruiser() {
+function createSmallYak() {
   return {
     ...createShip(3),
     name: 'Cruiser',
   };
 }
 
-function createDestroyer() {
+function createTinyYak() {
   return {
     ...createShip(2),
     name: 'Destroyer',
@@ -40,8 +40,8 @@ function createDestroyer() {
 }
 
 module.exports = {
-  createCarrier,
-  createBattleship,
-  createCruiser,
-  createDestroyer,
+  createLargeYak,
+  createMediumYak,
+  createSmallYak,
+  createTinyYak,
 };

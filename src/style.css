@@ -80,7 +80,6 @@ header {
 }
 
 main {
-  margin: 40px;
   text-align: center;
   display: grid;
   grid-template-columns: 1fr;
@@ -95,7 +94,7 @@ main {
   justify-content: center;
   justify-items: center;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   grid-template-rows: 1fr;
   gap: 20px;
 }
@@ -118,9 +117,12 @@ main {
 
 .space {
   background-color: rgba(52, 114, 11, 0.795);
-  width: 40px;
+  width: 60px;
+  height: 60px;
   border: 1px solid black;
-  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .space:hover {
@@ -129,8 +131,8 @@ main {
 
 .yaks {
   display: flex;
-  gap: 20px;
-  justify-content: center;
+
+  justify-content: space-evenly;
 }
 
 .yaks > * {
