@@ -1,14 +1,10 @@
 /* eslint-disable no-unused-vars */
 import {
-  createBattleship,
-  createCarrier,
-  createCruiser,
-  createDestroyer,
   createLargeYak,
   createMediumYak,
   createSmallYak,
   createTinyYak,
-} from './ship';
+} from './yak';
 import './style.css';
 const playerModule = require('../src/player');
 
@@ -25,24 +21,19 @@ const smallYak1 = document.getElementById('smallYak1');
 const mediumYak1 = document.getElementById('mediumYak1');
 const largeYak1 = document.getElementById('largeYak1');
 
-const turns = {
-  player1: 'p1',
-  player2: 'p2',
-};
-
 const gameState = {
   init: 'init',
   playing: 'playing',
   gameOver: 'gameOver',
 };
 
-let activeTurn = turns.player1;
 let state = gameState.init;
 
 function startGame() {
   populateBoards();
-  initBoards();
   updateYaks();
+  initBoards();
+
   state = gameState.playing;
 }
 
@@ -52,12 +43,6 @@ function nextTurn() {
   updateYaks();
   loadBoards();
   checkGameOver();
-
-  if (activeTurn === turns.player1) {
-    activeTurn = turns.player2;
-  } else {
-    activeTurn = turns.player1;
-  }
 }
 
 // rebuild boards after changes
@@ -117,7 +102,8 @@ function hideYaks(yaks) {
 }
 
 function updateYaks() {
-  const p1Yaks = player1.board.ships;
+  const p1Yaks = player1.board.yaks;
+  console.log(p1Yaks);
 
   resetYaks();
   hideYaks(p1Yaks);
@@ -203,14 +189,16 @@ function populateBoards() {
     },
   ];
 
-  player1.board.placeShip(tinyYak, createTinyYak());
-  player1.board.placeShip(largeYak, createLargeYak());
-  player1.board.placeShip(mediumYak, createMediumYak());
-  player1.board.placeShip(smallYak, createSmallYak());
+  player1.board.placeYak(tinyYak, createTinyYak());
+  player1.board.placeYak(largeYak, createLargeYak());
+  player1.board.placeYak(mediumYak, createMediumYak());
+  player1.board.placeYak(smallYak, createSmallYak());
+
+  console.log(player1.board);
 }
 
 function checkGameOver() {
-  if (player1.board.fleetSunk()) {
+  if (player1.board.yaksFound()) {
     console.log('game over!');
     state = gameState.gameOver;
   }

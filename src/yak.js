@@ -1,11 +1,11 @@
-function createShip(length) {
+function createYak(length) {
   return {
     length,
     hits: 0,
     hit: function () {
       this.hits++;
     },
-    isSunk: function () {
+    isFound: function () {
       return this.hits >= this.length;
     },
   };
@@ -13,29 +13,29 @@ function createShip(length) {
 
 function createLargeYak() {
   return {
-    ...createShip(5),
+    ...createYak(5),
     name: 'Large Yak',
   };
 }
 
 function createMediumYak() {
   return {
-    ...createShip(4),
-    name: 'Battleship',
+    ...createYak(4),
+    name: 'Medium Yak',
   };
 }
 
 function createSmallYak() {
   return {
-    ...createShip(3),
-    name: 'Cruiser',
+    ...createYak(3),
+    name: 'Small Yak',
   };
 }
 
 function createTinyYak() {
   return {
-    ...createShip(2),
-    name: 'Destroyer',
+    ...createYak(2),
+    name: 'Tiny Yak',
   };
 }
 

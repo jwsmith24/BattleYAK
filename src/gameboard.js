@@ -1,6 +1,6 @@
 const boardWidth = 10;
 const boardHeight = 10;
-const attackStatus = {
+const searchStatus = {
   HIT: 'HIT',
   MISS: 'MISS',
   NONE: 'NONE',
@@ -9,17 +9,17 @@ const attackStatus = {
 function createGameBoard() {
   const gameboard = {
     board: [],
-    ships: [],
+    yaks: [],
     attackLog: [],
     resetBoard: function () {
       for (let i = 0; i < boardHeight; i++) {
         this.board[i] = [];
         for (let j = 0; j < boardWidth; j++) {
           this.board[i][j] = {
-            ship: 'empty',
-            status: attackStatus.NONE,
+            yak: 'empty',
+            status: searchStatus.NONE,
             hasTarget: function () {
-              return this.ship !== 'empty';
+              return this.yak !== 'empty';
             },
           };
         }
@@ -27,34 +27,34 @@ function createGameBoard() {
     },
 
     // gets a list of spaces that the ship is occupying. Sets all of their ship references to target ship.
-    placeShip: function (spaces, ship) {
-      this.ships.push(ship);
+    placeYak: function (spaces, yak) {
+      this.yaks.push(yak);
       for (let space of spaces) {
-        this.board[space.y][space.x].ship = ship;
+        this.board[space.y][space.x].yak = yak;
       }
     },
     handleAttack: function (space) {
       // if the space has a ship reference, it's a hit!
       const target = this.board[space.y][space.x];
 
-      if (target.ship !== 'empty') {
-        this.logAttack(space, attackStatus.HIT);
-        target.ship.hit();
-        target.status = attackStatus.HIT;
-        this.updateActiveShips();
+      if (target.yak !== 'empty') {
+        this.logAttack(space, searchStatus.HIT);
+        target.yak.hit();
+        target.status = searchStatus.HIT;
+        this.updateActiveYaks();
         return true;
       } else {
-        this.logAttack(space, attackStatus.MISS);
-        target.status = attackStatus.MISS;
+        this.logAttack(space, searchStatus.MISS);
+        target.status = searchStatus.MISS;
         return false;
       }
     },
     logAttack: function (space, status) {
       this.attackLog.push({ space, status });
     },
-    fleetSunk: function () {
-      for (let ship of this.ships) {
-        if (!ship.isSunk()) {
+    yaksFound: function () {
+      for (let yak of this.yaks) {
+        if (!yak.isFound()) {
           return false;
         }
       }
@@ -75,12 +75,12 @@ function createGameBoard() {
           space.textContent = `${i}${j}`;
           space.id = `${i} ${j}`;
 
-          if (this.board[i][j].status === attackStatus.HIT) {
+          if (this.board[i][j].status === searchStatus.HIT) {
             space.textContent = 'X';
             space.style.backgroundColor = 'red';
           }
 
-          if (this.board[i][j].status === attackStatus.MISS) {
+          if (this.board[i][j].status === searchStatus.MISS) {
             space.textContent = 'O';
             space.style.backgroundColor = 'white';
           }
@@ -92,8 +92,8 @@ function createGameBoard() {
 
       return grid;
     },
-    updateActiveShips: function () {
-      this.ships = this.ships.filter((ship) => !ship.isSunk());
+    updateActiveYaks: function () {
+      this.yaks = this.yaks.filter((yak) => !yak.isFound());
     },
   };
   gameboard.resetBoard();
@@ -102,7 +102,7 @@ function createGameBoard() {
 
 module.exports = {
   createGameBoard,
-  attackStatus,
+  attackStatus: searchStatus,
   boardWidth,
   boardHeight,
 };
