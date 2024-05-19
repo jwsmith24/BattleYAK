@@ -133,6 +133,7 @@ main {
 
 .yaks {
   display: flex;
+  gap: 12px;
 
   justify-content: space-evenly;
 }

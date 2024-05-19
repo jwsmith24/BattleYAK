@@ -26,7 +26,7 @@ function createGameBoard() {
       }
     },
 
-    // gets a list of spaces that the ship is occupying. Sets all of their ship references to target ship.
+    // gets a list of spaces that the yak is occupying. Sets all of their yak references to target ship.
     placeYak: function (spaces, yak) {
       this.yaks.push(yak);
       for (let space of spaces) {

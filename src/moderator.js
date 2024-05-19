@@ -13,7 +13,7 @@ const p1BoardDisplay = document.getElementById('player1Board');
 const gameStatus = document.getElementById('state');
 const p1YakCount = document.getElementById('p1YakCount');
 
-let player = playerModule.createPlayer(playerModule.playerType.REAL);
+const player = playerModule.createPlayer(playerModule.playerType.REAL);
 
 const tinyYak1 = document.getElementById('tinyYak1');
 const smallYak1 = document.getElementById('smallYak1');
@@ -31,6 +31,7 @@ let state;
 initSession();
 function initSession() {
   state = gameState.init;
+  startGame();
 }
 
 function startGame() {
@@ -123,10 +124,14 @@ function resolveSpace(targetString) {
 
 // randomly pick a starting point, then select legal coordinates based on yak size
 function generateRandomOrigin() {
-  return {
+  const origin = {
     x: getRandomInt(),
     y: getRandomInt(),
   };
+
+  console.log('origin generated: ');
+  console.log(origin);
+  return origin;
 }
 
 // generate random int between 0 and 9
@@ -135,81 +140,76 @@ function getRandomInt() {
   return Math.floor(random * 9);
 }
 
-function placeYak() {}
+function placeYak(yak) {
+  let selecting = true;
+  let origin;
+  while (selecting) {
+    origin = generateRandomOrigin();
+    selecting = checkPlacement(yak, origin);
+  }
+
+  player.board.placeYak(origin, yak);
+}
+
+function checkPlacement(yak, origin) {
+  // if origin is occupied
+  if (player.board.board[origin.y][origin.x].yak !== 'empty') {
+    return true;
+  }
+
+  return !(checkY(origin, yak.length) && checkX(origin, yak.length));
+}
+
+function checkY(origin, length) {
+  for (let i = 1; i < length; i++) {
+    if (
+      !player.board.board[origin.y + i][origin.x] ||
+      player.board.board[origin.y + i][origin.x].yak !== 'empty'
+    ) {
+      console.log(`Block at ${player.board.board[origin.y + i][origin.x]}`);
+      return false;
+    }
+  }
+  //todo: ADD catches for board boundaries!
+  for (let i = 1; i < length; i++) {
+    if (
+      !player.board.board[origin.y - i][origin.x] ||
+      player.board.board[origin.y - i][origin.x].yak !== 'empty'
+    ) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+function checkX(origin, length) {
+  for (let i = 1; i < length; i++) {
+    if (
+      !player.board.board[origin.y][origin.x + i] ||
+      player.board.board[origin.y][origin.x + i].yak !== 'empty'
+    ) {
+      return false;
+    }
+  }
+
+  for (let i = 1; i < length; i++) {
+    if (
+      !player.board[origin.y][origin.x - i] ||
+      player.board[origin.y][origin.x - i].yak !== 'empty'
+    ) {
+      return false;
+    }
+  }
+
+  return true;
+}
 
 function populateBoards() {
-  const mediumYak = [
-    {
-      x: 0,
-      y: 0,
-    },
-    {
-      x: 1,
-      y: 0,
-    },
-    {
-      x: 2,
-      y: 0,
-    },
-    {
-      x: 3,
-      y: 0,
-    },
-  ];
-
-  const largeYak = [
-    {
-      x: 9,
-      y: 0,
-    },
-    {
-      x: 9,
-      y: 1,
-    },
-    {
-      x: 9,
-      y: 2,
-    },
-    {
-      x: 9,
-      y: 3,
-    },
-    {
-      x: 9,
-      y: 4,
-    },
-  ];
-
-  const tinyYak = [
-    {
-      x: 1,
-      y: 6,
-    },
-    {
-      x: 1,
-      y: 7,
-    },
-  ];
-
-  const smallYak = [
-    {
-      x: 9,
-      y: 9,
-    },
-    {
-      x: 8,
-      y: 9,
-    },
-    {
-      x: 7,
-      y: 9,
-    },
-  ];
-
-  player.board.placeYak(tinyYak, createTinyYak());
-  player.board.placeYak(largeYak, createLargeYak());
-  player.board.placeYak(mediumYak, createMediumYak());
-  player.board.placeYak(smallYak, createSmallYak());
+  placeYak(createTinyYak());
+  placeYak(createLargeYak());
+  placeYak(createMediumYak());
+  placeYak(createSmallYak());
 
   console.log(player.board);
 }
