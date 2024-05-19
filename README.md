@@ -1,6 +1,6 @@
-# Battle YAK
+# Where are the Yaks?
 
-Find all of your opponents yaks before they find yours to win!
+The yaks have wandered off into a field of tall, lush grass and it's beginning to get dark. Can you get them back to safety before the sun goes down?
 
 > [!NOTE]
-> Yak-themed Battleship implementation with an emphasis on Test-Driven Development. Capstone project for TOP Javascript course.
+> This is a slightly modified version of the capstone project for The Odin Project Javascript course. Emphasis was placed on test-driven development.

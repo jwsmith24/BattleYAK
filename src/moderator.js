@@ -10,11 +10,10 @@ const playerModule = require('../src/player');
 
 const p1BoardDisplay = document.getElementById('player1Board');
 
-const gameStatusText = document.getElementById('gameStatus');
+const gameStatus = document.getElementById('state');
 const p1YakCount = document.getElementById('p1YakCount');
-const p2YakCount = document.getElementById('p2YakCount');
 
-let player1 = playerModule.createPlayer(playerModule.playerType.REAL);
+let player = playerModule.createPlayer(playerModule.playerType.REAL);
 
 const tinyYak1 = document.getElementById('tinyYak1');
 const smallYak1 = document.getElementById('smallYak1');
@@ -27,7 +26,12 @@ const gameState = {
   gameOver: 'gameOver',
 };
 
-let state = gameState.init;
+let state;
+
+initSession();
+function initSession() {
+  state = gameState.init;
+}
 
 function startGame() {
   populateBoards();
@@ -36,8 +40,6 @@ function startGame() {
 
   state = gameState.playing;
 }
-
-startGame();
 
 function nextTurn() {
   updateYaks();
@@ -48,7 +50,7 @@ function nextTurn() {
 // rebuild boards after changes
 function loadBoards() {
   clearBoards();
-  p1BoardDisplay.appendChild(player1.board.buildDisplay());
+  p1BoardDisplay.appendChild(player.board.buildDisplay());
 }
 
 // build boards and add action listeners
@@ -68,8 +70,8 @@ function clearBoards() {
 function handleTurn(target) {
   if (state === gameState.playing) {
     const attack = resolveSpace(target);
-    const result = player1.board.handleAttack(attack);
-    player1.attackLog.push({ attack, result });
+    const result = player.board.handleAttack(attack);
+    player.attackLog.push({ attack, result });
     nextTurn();
   } else {
     console.log('Game is not currently active');
@@ -102,7 +104,7 @@ function hideYaks(yaks) {
 }
 
 function updateYaks() {
-  const p1Yaks = player1.board.yaks;
+  const p1Yaks = player.board.yaks;
   console.log(p1Yaks);
 
   resetYaks();
@@ -119,7 +121,22 @@ function resolveSpace(targetString) {
   return space;
 }
 
-// hard code yaks for testing
+// randomly pick a starting point, then select legal coordinates based on yak size
+function generateRandomOrigin() {
+  return {
+    x: getRandomInt(),
+    y: getRandomInt(),
+  };
+}
+
+// generate random int between 0 and 9
+function getRandomInt() {
+  let random = Math.random();
+  return Math.floor(random * 9);
+}
+
+function placeYak() {}
+
 function populateBoards() {
   const mediumYak = [
     {
@@ -189,16 +206,16 @@ function populateBoards() {
     },
   ];
 
-  player1.board.placeYak(tinyYak, createTinyYak());
-  player1.board.placeYak(largeYak, createLargeYak());
-  player1.board.placeYak(mediumYak, createMediumYak());
-  player1.board.placeYak(smallYak, createSmallYak());
+  player.board.placeYak(tinyYak, createTinyYak());
+  player.board.placeYak(largeYak, createLargeYak());
+  player.board.placeYak(mediumYak, createMediumYak());
+  player.board.placeYak(smallYak, createSmallYak());
 
-  console.log(player1.board);
+  console.log(player.board);
 }
 
 function checkGameOver() {
-  if (player1.board.yaksFound()) {
+  if (player.board.yaksFound()) {
     console.log('game over!');
     state = gameState.gameOver;
   }

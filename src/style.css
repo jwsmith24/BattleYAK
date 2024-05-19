@@ -85,6 +85,8 @@ main {
   grid-template-columns: 1fr;
   align-content: center;
   align-self: center;
+
+  gap: 18px;
 }
 
 .boards {
