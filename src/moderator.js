@@ -122,9 +122,6 @@ function generateRandomOrigin() {
     x: getRandomInt(),
     y: getRandomInt(),
   };
-
-  console.log('origin generated: ');
-  console.log(origin);
   return origin;
 }
 
@@ -141,62 +138,46 @@ function placeYak(yak) {
     origin = generateRandomOrigin();
     selecting = checkPlacement(yak, origin);
   }
-
-  player.board.placeYak(origin, yak);
 }
 
 function checkPlacement(yak, origin) {
-  // if origin is occupied
+  // Check if the origin is occupied
+
   if (player.board.board[origin.y][origin.x].yak !== 'empty') {
     return true;
   }
 
-  return !(checkY(origin, yak.length) && checkX(origin, yak.length));
+  // try to place in each direction. (add randomization later)
+  const result = checkDown(yak.length, origin);
+  console.log(result);
+  if (result === false) {
+    return true;
+  } else {
+    player.board.placeYak(result, yak);
+    return false;
+  }
 }
 
-function checkY(origin, length) {
+function checkDown(length, origin) {
+  let coordinates = [origin];
   for (let i = 1; i < length; i++) {
+    coordinates.push({
+      x: origin.x,
+      y: origin.y + i,
+    });
+
+    if (origin.y + i >= 9) {
+      return false;
+    }
+
     if (
-      !player.board.board[origin.y + i][origin.x] ||
+      !player.board.board[origin.y + i][origin.x].yak &&
       player.board.board[origin.y + i][origin.x].yak !== 'empty'
     ) {
-      console.log(`Block at ${player.board.board[origin.y + i][origin.x]}`);
       return false;
     }
   }
-  //todo: ADD catches for board boundaries!
-  for (let i = 1; i < length; i++) {
-    if (
-      !player.board.board[origin.y - i][origin.x] ||
-      player.board.board[origin.y - i][origin.x].yak !== 'empty'
-    ) {
-      return false;
-    }
-  }
-
-  return true;
-}
-
-function checkX(origin, length) {
-  for (let i = 1; i < length; i++) {
-    if (
-      !player.board.board[origin.y][origin.x + i] ||
-      player.board.board[origin.y][origin.x + i].yak !== 'empty'
-    ) {
-      return false;
-    }
-  }
-
-  for (let i = 1; i < length; i++) {
-    if (
-      !player.board[origin.y][origin.x - i] ||
-      player.board[origin.y][origin.x - i].yak !== 'empty'
-    ) {
-      return false;
-    }
-  }
-
-  return true;
+  return coordinates;
 }
 
 function populateBoards() {
