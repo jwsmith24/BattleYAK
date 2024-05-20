@@ -1,12 +1,6 @@
-/* eslint-disable no-unused-vars */
-import {
-  createLargeYak,
-  createMediumYak,
-  createSmallYak,
-  createTinyYak,
-} from './yak';
 import './style.css';
 const playerModule = require('../src/player');
+const yakModule = require('../src/yak');
 
 const p1BoardDisplay = document.getElementById('player1Board');
 
@@ -206,10 +200,10 @@ function checkX(origin, length) {
 }
 
 function populateBoards() {
-  placeYak(createTinyYak());
-  placeYak(createLargeYak());
-  placeYak(createMediumYak());
-  placeYak(createSmallYak());
+  placeYak(yakModule.createTinyYak());
+  placeYak(yakModule.createLargeYak());
+  placeYak(yakModule.createMediumYak());
+  placeYak(yakModule.createSmallYak());
 
   console.log(player.board);
 }
