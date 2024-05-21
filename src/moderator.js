@@ -1,6 +1,9 @@
 import './style.css';
 const playerModule = require('../src/player');
 const yakModule = require('../src/yak');
+const [createTimer] = require('../src/timer');
+
+const timerDisplay = document.getElementById('timer');
 
 const p1BoardDisplay = document.getElementById('player1Board');
 
@@ -32,7 +35,27 @@ function initSession() {
   });
 }
 
+function checkGameOver() {
+  if (timer.seconds === 0 || player.board.yaksFound()) {
+    endGame();
+  }
+}
+
+function endGame() {
+  console.log('game over!');
+  timerDisplay.textContent = 'Game Over!';
+  state = gameState.gameOver;
+  timer.stop();
+}
+
+function updateTimer() {
+  timerDisplay.textContent = timer.seconds;
+  checkGameOver();
+}
+
+const timer = createTimer(updateTimer);
 function startGame() {
+  timer.start();
   populateBoards();
   updateYaks();
   initBoards();
@@ -273,11 +296,4 @@ function populateBoards() {
   placeYak(yakModule.createSmallYak());
 
   console.log(player.board);
-}
-
-function checkGameOver() {
-  if (player.board.yaksFound()) {
-    console.log('game over!');
-    state = gameState.gameOver;
-  }
 }
