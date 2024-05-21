@@ -4,7 +4,7 @@ const yakModule = require('../src/yak');
 
 const p1BoardDisplay = document.getElementById('player1Board');
 
-const gameStatus = document.getElementById('state');
+const gameStateButton = document.getElementById('stateButton');
 const p1YakCount = document.getElementById('p1YakCount');
 
 const player = playerModule.createPlayer(playerModule.playerType.REAL);
@@ -25,7 +25,11 @@ let state;
 initSession();
 function initSession() {
   state = gameState.init;
-  startGame();
+
+  gameStateButton.addEventListener('click', () => {
+    startGame();
+    gameStateButton.style.display = 'none';
+  });
 }
 
 function startGame() {
@@ -62,6 +66,8 @@ function clearBoards() {
   p1BoardDisplay.innerHTML = '';
 }
 
+//todo: CHECK TO MAKE SURE TARGET ISN"T ALREADY HIT
+// REVIEW LOGIC TO AVOID SHIPS OVERLAPPING
 function handleTurn(target) {
   if (state === gameState.playing) {
     const attack = resolveSpace(target);

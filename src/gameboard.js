@@ -72,7 +72,7 @@ function createGameBoard() {
         for (let j = 0; j < boardWidth; j++) {
           let space = document.createElement('div');
           space.classList.add('space');
-          space.textContent = `${i}${j}`;
+
           space.id = `${i} ${j}`;
 
           if (this.board[i][j].status === searchStatus.HIT) {
