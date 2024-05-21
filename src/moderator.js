@@ -49,7 +49,7 @@ function endGame() {
 }
 
 function updateTimer() {
-  timerDisplay.textContent = timer.seconds;
+  timerDisplay.textContent = `Time Remaining: ${timer.seconds}`;
   checkGameOver();
 }
 
