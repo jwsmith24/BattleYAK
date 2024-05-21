@@ -148,7 +148,8 @@ function checkPlacement(yak, origin) {
   }
 
   // try to place in each direction. (add randomization later)
-  const result = checkDown(yak.length, origin);
+  const direction = randomizeDirection();
+  const result = direction(yak.length, origin);
   console.log(result);
   if (result === false) {
     return true;
@@ -156,6 +157,63 @@ function checkPlacement(yak, origin) {
     player.board.placeYak(result, yak);
     return false;
   }
+}
+
+function randomizeDirection() {
+  switch (Math.floor(Math.random() * 4)) {
+    case 0:
+      return checkDown;
+    case 1:
+      return checkUp;
+    case 2:
+      return checkLeft;
+    case 3:
+      return checkRight;
+  }
+}
+
+function checkLeft(length, origin) {
+  let coordinates = [origin];
+  for (let i = 1; i < length; i++) {
+    coordinates.push({
+      x: origin.x - i,
+      y: origin.y,
+    });
+
+    if (origin.x - i < 0) {
+      return false;
+    }
+
+    if (
+      !player.board.board[origin.y][origin.x - i].yak &&
+      player.board.board[origin.y][origin.x - i].yak !== 'empty'
+    ) {
+      return false;
+    }
+  }
+  return coordinates;
+}
+
+function checkRight(length, origin) {
+  let coordinates = [origin];
+  for (let i = 1; i < length; i++) {
+    coordinates.push({
+      x: origin.x + i,
+      y: origin.y,
+    });
+
+    if (origin.x + i >= 9) {
+      return false;
+    }
+
+    if (
+      !player.board.board[origin.y][origin.x + i].yak &&
+      player.board.board[origin.y][origin.x + i].yak !== 'empty'
+    ) {
+      return false;
+    }
+  }
+  return coordinates;
 }
 
 function checkDown(length, origin) {
@@ -173,6 +231,28 @@ function checkDown(length, origin) {
     if (
       !player.board.board[origin.y + i][origin.x].yak &&
       player.board.board[origin.y + i][origin.x].yak !== 'empty'
+    ) {
+      return false;
+    }
+  }
+  return coordinates;
+}
+
+function checkUp(length, origin) {
+  let coordinates = [origin];
+  for (let i = 1; i < length; i++) {
+    coordinates.push({
+      x: origin.x,
+      y: origin.y - i,
+    });
+
+    if (origin.y - i < 0) {
+      return false;
+    }
+
+    if (
+      !player.board.board[origin.y - i][origin.x].yak &&
+      player.board.board[origin.y - i][origin.x].yak !== 'empty'
     ) {
       return false;
     }
