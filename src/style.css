@@ -80,6 +80,7 @@ header {
 }
 
 main {
+  width: 100vw;
   text-align: center;
   display: grid;
   grid-template-columns: 1fr;
@@ -119,8 +120,7 @@ main {
 
 .space {
   background-color: rgba(52, 114, 11, 0.795);
-  width: 60px;
-  height: 60px;
+
   border: 1px solid black;
   display: flex;
   justify-content: center;

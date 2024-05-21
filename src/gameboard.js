@@ -78,13 +78,12 @@ function createGameBoard() {
           if (this.board[i][j].status === searchStatus.HIT) {
             space.textContent = 'X';
             space.style.backgroundColor = 'red';
-          }
-
-          if (this.board[i][j].status === searchStatus.MISS) {
+          } else if (this.board[i][j].status === searchStatus.MISS) {
             space.textContent = 'O';
             space.style.backgroundColor = 'white';
+          } else {
+            space.textContent = '|';
           }
-
           row.appendChild(space);
         }
         grid.appendChild(row);
